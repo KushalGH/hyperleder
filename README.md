@@ -88,6 +88,7 @@ step 9: id -nG
 Test the docker & composer version
 1. docker --version
 2. docker-compose --version
+note: once you configure ${USER}, it's suggested that you should restart your system
 ```
 
 ![picture](images/docker_live.png)

@@ -1,4 +1,4 @@
-# Hyperledger Fabric
+ # Hyperledger Fabric
 - Hyperledger Fabric is an enterprise-grade, permissioned, distributed ledger technology platform designed for use in enterprise contexts, which means Fabric offers features that are required or essential in enterprise applications.
 - Hyperledger Fabric is primarily used to build private networks where all of the nodes in the participating network are known and verified. 
 - These nodes need not necessarily trust one another, but the identity of every participating node is known.
@@ -35,7 +35,7 @@
 - **Phase 2: Order Phase:** The ordering service or orderer nodes are then responsible for arranging all of these transactions in some order after which they are passed to validating peers or a validating service.
 - **Phase 3: Validation Phase:** Each peer on the network validates the transactions before committing them to the ledger. The validating peers is where transactions are verified to ensure that they can be applied to the latest state of the ledger. Validating peers help check for issues, such as double spending, ensuring that the same asset is not sent to multiple participants at the same time.
 
-[image]
+![picture](images/trans_flow.png)
 
 - **Flow of transactions**
     -  The client application will interact with the peer on the blockchain network and submit a transaction proposal. 
@@ -80,12 +80,82 @@ Setting up the Hyperledgere network using docker on local. The peers of the netw
 mkdir fabric_demo
 ```
 - Step 2:  In order to download all of the Fabric binaries and the Docker images that will allow us to run a Fabric network on our local, we need to execute a script that is available at this URL.
+
+![picture](images/setup.png)
+![picture](images/hyper_1.png)
+
 ```
 curl -sSL https://goo.gl/6wtTN5 | bash -s 1.1.0
+// docker is not installed then read readme.md file (topic: INSTALLING DOCKER & DOCKER-COMPOSER ON UBUNTU) 
 ```
 
 
+- Step 3: run this command to know, what all docker images are downloaded
+![picture](images/image-hyper_3.png)
 
+```
+docker images
+```
+
+
+It also, provides exaples to play with. you can kind them under: fabric-samples
+
+
+- Step 4: Navigate to "/demo/fabric_demo/fabric-samples/first-network" and type ls. this will show us differnet YAML files. **These YAML files** contain all of the container specifications for multiple containers. 
+
+- Step 5: Hyperledger fabric offers a very handy script that you can use to bring up your first network. this is called BYFN.sh [Build your first netwrok] 
+
+![picture](images/setup_2.png)
+
+```
+/demo/fabric_demo/fabric-samples/first-network$ ./byfn.sh -m generate
+
+// certificates are generated using cryptogen tool
+// generate command generates the network
+```
+
+> This byfn.sh sets up facbric network which includes:
+> -public channel called mychannel - a channel for execution
+> -Two peers from 2 organizations each
+> -Certificates for both the peers
+> -Genesis block for the blockchain 
+
+- Step 6: To bring up the network, we use: 
+
+![picture](images/hyper_up_01.png)
+![picture](images/hyper_up_02.png)
+
+```
+/demo/fabric_demo/fabric-samples/first-network$ ./byfn.sh -m up
+```
+
+Once you execute the command [./byfn.sh -m up ] this is what will happen automatically through the command:
+1. Creating network "net_byfn" with the default driver
+2. Creating volume "net_peer0.org2.example.com" with default driver
+3. Creating volume "net_peer1.org2.example.com" with default driver
+4. Creating volume "net_peer1.org1.example.com" with default driver
+5. Creating volume "net_peer0.org1.example.com" with default driver
+6. Creating volume "net_orderer.example.com" with default driver
+7. Channel "mychannel" is created successfully. this can use **ordering service available at  orderer.example.com port 7050**
+8. peer0.org1 joined on the channel "mychannel"
+9. peer1.org1 joined on the channel "mychannel" 
+10. peer0.org2 joined on the channel "mychannel" 
+11. peer1.org2 joined on the channel "mychannel"
+12. Anchor peers for org "Org1MSP" on "mychannel" is updated successfully. **The anchor peers for each org are the main peers that communicate with peers from other organizations. Those have also been updated successfully.** 
+13. Anchor peers for org "Org2MSP" on "mychannel" is updated successfully
+14. Chaincode is installed on peer0.org1. **In order to test your netwrok. The script installs bunch of example chaincode on each of your peers.**
+15. Chaincode is installed on peer0.org2
+16. Chaincode Instantiation on peer0.org2 on channel 'mychannel' is successful
+17. Querying on peer0.org1 on channel 'mychannel' **This chain code isthen queried and executed using the peer command**
+18. Query on peer0.org1 on channel 'mychannel' is successful 
+19. Invoke transaction on peer0.org1 on channel 'mychannel' is successful
+20. Chaincode is installed on peer1.org2
+21. Querying on peer1.org2 on channel 'mychannel'. **This runs peer chaincode query command to test our network. that is used to query chanincode for a particular value from the state database. It doesnot invoke a transactoin. peer chaincode query command is what we will execute in order to change the state of the ledger, ie. executng a transaction.**
+22. Query on peer1.org2 on channel 'mychannel' is successful
+23. All GOOD, BYFN execution completed 
+
+
+- Step 7 
 
 
 
